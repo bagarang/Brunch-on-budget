@@ -178,3 +178,135 @@ body {
     .logo-contact-main { width: 150px; }
     .judul-order { font-size: 1.5rem; }
 }
+
+/* === CHATBOT WIDGET === */
+#chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Tombol Tanya Saya */
+#chat-toggle-btn {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#chat-toggle-btn:hover {
+    background-color: #e05548;
+    transform: scale(1.05);
+}
+
+/* Kotak Chat (Awalnya tersembunyi) */
+#chat-box {
+    display: none;
+    width: 320px;
+    height: 450px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    border: 1px solid #fdceb4;
+}
+
+/* Header Chat */
+.chat-header {
+    background-color: #fdceb4;
+    padding: 15px;
+    color: #5a3e36;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-chat { cursor: pointer; font-size: 1.2rem; }
+
+/* Area Pesan */
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #fffaf5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background-color: #fdceb4;
+    color: #5a3e36;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+
+.user-msg {
+    background-color: #ff6f61;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+/* Input Area */
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+#user-input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+#send-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #ff6f61;
+}
+
+/* Tombol Opsi Cepat */
+.quick-options {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+.option-btn {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border: 1px solid #ff6f61;
+    color: #ff6f61;
+    background: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.option-btn:hover { background: #ff6f61; color: white; }
