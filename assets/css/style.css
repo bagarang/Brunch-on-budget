@@ -100,19 +100,45 @@ body {
 .harga-produk { font-size: 1.2rem; color: #ff6f61; font-weight: bold; background-color: #fff0e6; padding: 5px; border-radius: 10px; border: 1px solid #fdceb4; }
 
 
-/* === HALAMAN CONTACT (NEW) === */
-.konten-contact {
+/* ========================================= */
+/* === HALAMAN CONTACT (LAYOUT BARU) === */
+/* ========================================= */
+
+.contact-page-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Konten cenderung ke bawah */
+    padding: 40px 20px;
+    position: relative;
+    min-height: 85vh; /* Tinggi minimal agar layout pas */
+}
+
+/* Grid System untuk Membagi Layar */
+.contact-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 Kolom Imajiner */
+    width: 100%;
+    max-width: 1200px;
+    gap: 30px;
+    align-items: end; /* Ratakan elemen ke garis bawah */
+    z-index: 1;
+}
+
+/* --- 1. Area Tengah (Logo & Tombol Order) --- */
+.konten-center {
+    grid-column: 2 / 3; /* Posisi di tengah persis */
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 1;
     text-align: center;
-    background-color: rgba(255,255,255,0.6); /* Sedikit background putih agar tulisan terbaca */
+    background-color: rgba(255,255,255,0.6); 
     padding: 30px;
     border-radius: 20px;
+    margin-bottom: 60px; /* Jarak dari bawah agar seimbang */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* Baris Gambar Thumbnail (g1-g4) */
+/* Elemen di dalam Konten Tengah */
 .thumbnail-row {
     display: flex;
     gap: 15px;
@@ -128,14 +154,12 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-/* Logo Besar di Contact */
 .logo-contact-main {
     width: 200px;
     height: auto;
     margin-bottom: 15px;
 }
 
-/* Tulisan ORDER NOW */
 .judul-order {
     font-size: 2rem;
     font-weight: 800;
@@ -144,7 +168,6 @@ body {
     letter-spacing: 2px;
 }
 
-/* Tombol WhatsApp */
 .tombol-wa {
     display: inline-flex;
     align-items: center;
@@ -165,21 +188,234 @@ body {
     transform: scale(1.05);
 }
 
-.icon-wa {
-    font-size: 1.5rem;
+.icon-wa { font-size: 1.5rem; }
+
+
+/* --- 2. Area Kiri Bawah (Komentar Glassmorphism) --- */
+.comment-area-left {
+    grid-column: 1 / 2; /* Posisi di Kolom Kiri */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: left;
+    width: 100%;
+    max-width: 380px;
 }
 
-/* Responsif HP */
-@media (max-width: 600px) {
+.glass-title {
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+/* Kotak Form Efek Kaca */
+.glass-form {
+    background: rgba(255, 255, 255, 0.25); /* Transparan */
+    backdrop-filter: blur(12px); /* Blur Background */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    margin-bottom: 20px;
+}
+
+/* Input Styles */
+.glass-form input {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    font-size: 0.95rem;
+    transition: box-shadow 0.3s;
+}
+
+.glass-form input:focus {
+    box-shadow: 0 0 8px rgba(255, 111, 97, 0.4);
+}
+
+.comment-box-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.glass-form textarea {
+    width: 100%;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    resize: none;
+    display: block;
+    margin-bottom: 8px; /* Jarak ke tombol */
+    transition: box-shadow 0.3s;
+}
+
+.glass-form textarea:focus {
+    box-shadow: 0 0 8px rgba(255, 111, 97, 0.4);
+}
+
+/* Tombol Post */
+#btnPost {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#btnPost:hover:not(:disabled) {
+    background-color: #e05548;
+    transform: scale(1.02);
+}
+
+#btnPost:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* --- Hasil Komentar (Dropdown Kaca) --- */
+.glass-results {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 5px; /* Space untuk scrollbar */
+}
+
+/* Scrollbar Custom (Opsional - agar rapi) */
+.glass-results::-webkit-scrollbar { width: 5px; }
+.glass-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
+
+/* Style Dropdown Details */
+.glass-dropdown {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    color: #333;
+}
+
+.glass-dropdown summary {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9rem;
+    list-style: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Panah Custom Dropdown */
+.glass-dropdown summary::after {
+    content: '▼';
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+}
+.glass-dropdown[open] summary::after { transform: rotate(180deg); }
+
+/* Item Isi Chat */
+.glass-comment-item {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.7); /* Lebih solid agar teks terbaca jelas */
+    animation: fadeIn 0.4s ease;
+}
+
+.glass-comment-item:last-child { border-bottom: none; }
+
+.gc-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #e05548;
+    margin-bottom: 4px;
+}
+
+.gc-time {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.gc-body {
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.gc-wa {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #25D366; 
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVITAS HP === */
+@media (max-width: 850px) {
     .header-atas { padding: 10px 20px; }
     .galeri-menu { gap: 20px; }
     .item-menu, .item-produk { width: 45%; }
-    .thumbnail-row img { width: 60px; height: 60px; } /* Thumbnail mengecil di HP */
+    
+    /* Layout Contact di HP */
+    .contact-grid-container {
+        grid-template-columns: 1fr; /* Jadi 1 kolom vertikal */
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+    }
+    
+    /* Order Dulu baru Komen (di HP) atau sebaliknya, di sini Order diatas */
+    .konten-center {
+        width: 100%;
+        margin-bottom: 30px;
+        order: 1; /* Urutan pertama */
+    }
+
+    .comment-area-left {
+        width: 100%;
+        max-width: 100%;
+        order: 2; /* Urutan kedua */
+    }
+
+    .thumbnail-row img { width: 60px; height: 60px; }
     .logo-contact-main { width: 150px; }
     .judul-order { font-size: 1.5rem; }
 }
 
-/* === CHATBOT WIDGET === */
+
+/* === CHATBOT WIDGET (BAWAAN LAMA) === */
 #chat-container {
     position: fixed;
     bottom: 20px;
@@ -188,7 +424,6 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Tombol Tanya Saya */
 #chat-toggle-btn {
     background-color: #ff6f61;
     color: white;
@@ -208,7 +443,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Kotak Chat (Awalnya tersembunyi) */
 #chat-box {
     display: none;
     width: 320px;
@@ -224,7 +458,6 @@ body {
     border: 1px solid #fdceb4;
 }
 
-/* Header Chat */
 .chat-header {
     background-color: #fdceb4;
     padding: 15px;
@@ -237,7 +470,6 @@ body {
 
 .close-chat { cursor: pointer; font-size: 1.2rem; }
 
-/* Area Pesan */
 .chat-messages {
     flex: 1;
     padding: 15px;
@@ -270,7 +502,6 @@ body {
     border-bottom-right-radius: 0;
 }
 
-/* Input Area */
 .chat-input-area {
     display: flex;
     border-top: 1px solid #eee;
@@ -293,7 +524,6 @@ body {
     color: #ff6f61;
 }
 
-/* Tombol Opsi Cepat */
 .quick-options {
     display: flex;
     gap: 5px;
@@ -308,150 +538,5 @@ body {
     background: white;
     border-radius: 15px;
     cursor: pointer;
-/* === COMMENT SECTION STYLES === */
-.comment-wrapper {
-    margin-top: 40px;
-    width: 100%;
-    max-width: 500px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #fdceb4;
-    text-align: left; /* Reset text align jadi rata kiri */
 }
-
-.comment-wrapper h3 {
-    text-align: center;
-    color: #5a3e36;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-}
-
-/* Form Styling */
-.comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.comment-form input, 
-.comment-form textarea {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-family: 'Poppins', sans-serif;
-    outline: none;
-    transition: 0.3s;
-}
-
-.comment-form input:focus, 
-.comment-form textarea:focus {
-    border-color: #ff6f61;
-    box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
-}
-
-.comment-form textarea {
-    height: 80px;
-    resize: none;
-    background-color: #fff;
-}
-
-/* Disabled State (saat nama belum diisi) */
-.comment-form textarea:disabled,
-#btnPost:disabled {
-    background-color: #eee;
-    cursor: not-allowed;
-}
-
-#btnPost {
-    background-color: #ff6f61;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-}
-
-#btnPost:hover:not(:disabled) {
-    background-color: #e05548;
-    transform: scale(1.02);
-}
-
-/* Dropdown (Details/Summary) Styling */
-.month-group {
-    margin-bottom: 15px;
-    border: 1px solid #fdceb4;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-}
-
-.month-group summary {
-    background-color: #fdceb4;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #5a3e36;
-    list-style: none; /* Hilangkan panah default browser */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Custom Arrow untuk Dropdown */
-.month-group summary::after {
-    content: '▼';
-    font-size: 0.8rem;
-    transition: transform 0.3s;
-}
-
-.month-group[open] summary::after {
-    transform: rotate(180deg);
-}
-
-/* Isi Komentar */
-.comment-item {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    animation: fadeIn 0.5s ease;
-}
-
-.comment-item:last-child {
-    border-bottom: none;
-}
-
-.c-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.c-time {
-    font-size: 0.75rem;
-    color: #888;
-}
-
-.c-body {
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.4;
-}
-
-.c-email {
-    margin-top: 5px;
-    color: #ff6f61;
-    font-size: 0.8rem;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 .option-btn:hover { background: #ff6f61; color: white; }
