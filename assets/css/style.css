@@ -1,4 +1,6 @@
-/* === RESET DASAR === */
+/* ========================================= */
+/* 1. RESET & BASIC STYLES */
+/* ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -10,10 +12,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #fdf5e6; /* Warna dasar cadangan */
 }
 
-/* === HEADER & FOOTER === */
+/* ========================================= */
+/* 2. HEADER & FOOTER */
+/* ========================================= */
 .header-atas, .footer-bawah {
     background-color: #fdceb4;
     position: relative;
@@ -25,7 +28,7 @@ body {
     text-align: center;
     color: #5a3e36;
     font-size: 0.9rem;
-    margin-top: auto; /* Dorong footer ke paling bawah */
+    margin-top: auto;
 }
 
 .header-atas {
@@ -53,23 +56,25 @@ body {
 /* Logo Kanan Header */
 .logo-kanan img { height: 40px; width: auto; }
 
-/* === BACKGROUND & LAYOUT UTAMA === */
+
+/* ========================================= */
+/* 3. BACKGROUND & HERO UTAMA */
+/* ========================================= */
 .hero-utama {
     flex: 1; 
     position: relative; 
     width: 100%;
-    /* FIX PENTING: Jangan pakai hidden, pakai visible/auto agar bisa di-scroll di HP */
+    /* PENTING: visible agar bisa scroll di HP */
     overflow: visible; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* Default center */
 }
 
-/* Background Doodle (Fixed agar tidak ikut scroll) */
+/* Background Doodle (Fixed position agar diam saat scroll) */
 .hero-utama::before {
     content: "";
-    position: fixed; /* Ubah ke Fixed agar background diam saat scroll */
+    position: fixed; 
     top: 0; left: 0;
     width: 100%;
     height: 100%;
@@ -80,17 +85,18 @@ body {
     filter: grayscale(100%);
     opacity: 0.5;
     z-index: -1; 
-    pointer-events: none;
 }
 
-/* === HALAMAN HOME (INDEX) === */
-.konten-tengah { text-align: center; z-index: 1; padding: 40px 20px; }
+
+/* ========================================= */
+/* 4. HALAMAN HOME & MENU (Existing) */
+/* ========================================= */
+.konten-tengah { text-align: center; z-index: 1; padding: 20px; }
 .logo-produk { width: 180px; height: auto; margin-bottom: 20px; }
 .judul-tagline { font-size: 2.5rem; color: #333; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
 .tombol-pesan { display: inline-block; padding: 15px 50px; background-color: #ff6f61; color: white; font-size: 1.3rem; font-weight: bold; text-decoration: none; border-radius: 50px; transition: transform 0.3s, background-color 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 .tombol-pesan:hover { background-color: #e05548; transform: scale(1.05); }
 
-/* === HALAMAN MENU === */
 .galeri-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; z-index: 1; max-width: 1200px; padding: 40px 20px; }
 .item-menu { text-align: center; background-color: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; width: 220px; }
 .item-menu:hover { transform: translateY(-10px); }
@@ -105,22 +111,21 @@ body {
 
 
 /* ========================================= */
-/* === HALAMAN CONTACT (SINGLE SOURCE) === */
+/* 5. HALAMAN CONTACT (Fixed Layout) */
 /* ========================================= */
-
 .contact-page-layout {
     width: 100%;
     padding: 40px 20px;
     display: flex;
     justify-content: center;
-    /* Hilangkan min-height fix agar bisa scroll */
-    height: auto; 
+    /* Pastikan tinggi menyesuaikan konten agar scrollable di HP */
+    min-height: auto; 
 }
 
-/* Grid Container Utama */
+/* Grid System Desktop */
 .contact-grid-container {
     display: grid;
-    /* 3 Kolom: Kiri(Komentar) - Tengah(Order) - Kanan(Kosong/Spacer) */
+    /* Kiri(Komen) - Tengah(Order) - Kanan(Spacer) */
     grid-template-columns: 1fr 1fr 1fr; 
     width: 100%;
     max-width: 1200px;
@@ -128,7 +133,7 @@ body {
     align-items: end; /* Desktop: Rata bawah */
 }
 
-/* --- Area Tengah (Logo & Tombol Order) --- */
+/* --- Area Tengah (Logo & Order) --- */
 .konten-center {
     grid-column: 2 / 3; /* Posisi Tengah */
     display: flex;
@@ -139,8 +144,8 @@ body {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    /* Margin bawah agar di desktop tidak terlalu mepet footer */
-    margin-bottom: 60px; 
+    /* Margin bawah di desktop supaya tidak nempel footer */
+    margin-bottom: 80px; 
 }
 
 .thumbnail-row { display: flex; gap: 15px; margin-bottom: 20px; }
@@ -162,7 +167,7 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: transform 0.3s;
 }
-.tombol-wa:hover { transform: scale(1.05); }
+.tombol-wa:hover { transform: scale(1.05); background-color: #1ebe57; }
 .icon-wa { font-size: 1.5rem; }
 
 
@@ -173,7 +178,6 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     width: 100%;
-    /* Batasi lebar di desktop agar cantik */
     max-width: 400px; 
 }
 
@@ -186,7 +190,6 @@ body {
     padding-left: 5px;
 }
 
-/* Glass Form Style */
 .glass-form {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(12px);
@@ -224,6 +227,8 @@ body {
 
 /* Hasil Komentar */
 .glass-results { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+.glass-results::-webkit-scrollbar { width: 5px; }
+.glass-results::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
 
 .glass-dropdown {
     background: rgba(255, 255, 255, 0.4);
@@ -252,51 +257,177 @@ body {
 .gc-wa { margin-top: 8px; font-size: 0.8rem; color: #25D366; font-weight: bold; }
 
 
-/* ================================================= */
-/* === RESPONSIVE (TABLET & MOBILE) === */
-/* ================================================= */
-
+/* ========================================= */
+/* 6. RESPONSIVE MOBILE & TABLET */
+/* ========================================= */
 @media (max-width: 1024px) {
-    /* Header Responsive */
+    /* Header Stacked */
     .header-atas { flex-direction: column; gap: 15px; padding: 15px; }
     .nav-kiri { order: 2; display: flex; gap: 15px; }
     .logo-kanan { order: 1; }
 
-    /* Layout Contact Responsive */
+    /* Layout Stacked (Atas - Bawah) */
     .contact-grid-container {
-        /* Ubah Grid jadi Flex Column (Atas Bawah) */
         display: flex;
-        flex-direction: column;
-        align-items: center; /* Rata tengah */
+        flex-direction: column; /* Menumpuk ke bawah */
+        align-items: center; 
         gap: 30px;
+        width: 100%;
     }
 
-    /* Urutan Tampilan di HP */
+    /* Urutan Tampilan */
     .konten-center {
         order: 1; /* Order Paling Atas */
         width: 100%;
         max-width: 500px;
-        grid-column: auto;
         margin-bottom: 0;
     }
 
     .comment-area-left {
         order: 2; /* Komentar di Bawah Order */
         width: 100%;
-        max-width: 500px; /* Samakan lebar dengan atasnya */
-        grid-column: auto;
-        /* Pastikan background terlihat jelas */
-        background-color: transparent; 
+        max-width: 500px; 
     }
+    
+    /* Pastikan Hero bisa discroll */
+    .hero-utama {
+        height: auto;
+        padding-bottom: 50px;
+    }
+}
 
-    /* Penyesuaian Ukuran di HP Kecil */
+@media (max-width: 480px) {
     .thumbnail-row img { width: 60px; height: 60px; }
     .logo-contact-main { width: 160px; }
     .judul-order { font-size: 1.6rem; }
     .tombol-wa { width: 100%; justify-content: center; }
 }
 
-@media (max-width: 480px) {
-    .judul-tagline { font-size: 1.8rem; }
-    .nav-kiri a { font-size: 0.85rem; }
+
+/* ========================================= */
+/* 7. CHATBOT WIDGET (RESTORED) */
+/* ========================================= */
+#chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
 }
+
+#chat-toggle-btn {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#chat-toggle-btn:hover {
+    background-color: #e05548;
+    transform: scale(1.05);
+}
+
+#chat-box {
+    display: none;
+    width: 320px;
+    height: 450px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    border: 1px solid #fdceb4;
+}
+
+.chat-header {
+    background-color: #fdceb4;
+    padding: 15px;
+    color: #5a3e36;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-chat { cursor: pointer; font-size: 1.2rem; }
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #fffaf5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background-color: #fdceb4;
+    color: #5a3e36;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+
+.user-msg {
+    background-color: #ff6f61;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+#user-input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+#send-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #ff6f61;
+}
+
+.quick-options {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+.option-btn {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border: 1px solid #ff6f61;
+    color: #ff6f61;
+    background: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.option-btn:hover { background: #ff6f61; color: white; }
