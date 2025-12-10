@@ -54,7 +54,8 @@
                 </div>
 
                 <div id="commentListContainer" class="glass-results">
-                    </div>
+                    <p style="text-align:center; color:#555; font-size:0.9rem; padding:10px;">⏳ Memuat komentar...</p>
+                </div>
             </div>
 
         </div>
@@ -66,13 +67,17 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            
+            // LINK DATABASE KAMU SUDAH TERPASANG DISINI:
+            const API_URL = "https://script.google.com/macros/s/AKfycbwNQRp_zl6Thnzk84KMgM8rCjqBChEKbhmA6u9u2weoiCxW15HGN09shkCRmBAadynO/exec"; 
+
             const nameInput = document.getElementById('inputName');
-            const waInput = document.getElementById('inputWA'); // Ganti Email jadi WA
+            const waInput = document.getElementById('inputWA');
             const commentInput = document.getElementById('inputComment');
             const postBtn = document.getElementById('btnPost');
             const listContainer = document.getElementById('commentListContainer');
 
-            // 1. Logika Buka Kolom
+            // 1. Validasi Input
             nameInput.addEventListener('input', function() {
                 if (this.value.trim().length > 0) {
                     commentInput.disabled = false;
@@ -87,10 +92,10 @@
                 }
             });
 
-            // 2. Load Data
-            loadComments();
+            // 2. Load Data dari Google Sheets
+            fetchComments();
 
-            // 3. Action Post
+            // 3. Kirim Data ke Google Sheets
             postBtn.addEventListener('click', () => {
                 const name = nameInput.value.trim();
                 const wa = waInput.value.trim();
@@ -101,51 +106,89 @@
                     return;
                 }
 
+                // Ubah tombol jadi Loading
+                postBtn.innerText = "SENDING...";
+                postBtn.disabled = true;
+
+                // Siapkan Data Waktu
                 const now = new Date();
                 const monthOptions = { year: 'numeric', month: 'long' };
                 const groupID = now.toLocaleDateString('id-ID', monthOptions); 
-                const timeOptions = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
-                const timestamp = now.toLocaleDateString('id-ID', timeOptions);
+                
+                const formData = new FormData();
+                formData.append('nama', name);
+                formData.append('wa', wa);
+                formData.append('komentar', text);
+                formData.append('group_bulan', groupID);
 
-                const newComment = {
-                    id: Date.now(),
-                    name: name,
-                    wa: wa, // Simpan WA
-                    text: text,
-                    group: groupID, 
-                    time: timestamp,
-                    rawDate: now.toISOString()
-                };
-
-                saveComment(newComment);
-                renderComment(newComment);
-
-                // Reset Form (Nama biarkan saja)
-                commentInput.value = '';
-                waInput.value = '';
+                // Kirim ke API
+                fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        // Reset Form
+                        commentInput.value = '';
+                        waInput.value = '';
+                        postBtn.innerText = "POST";
+                        postBtn.disabled = false;
+                        
+                        // Reload komentar
+                        listContainer.innerHTML = '<p style="text-align:center; padding:10px;">🔄 Sinkronisasi data...</p>';
+                        fetchComments(); 
+                    } else {
+                        alert("Gagal mengirim komentar. Coba lagi.");
+                        postBtn.innerText = "POST";
+                        postBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Terjadi kesalahan koneksi internet.");
+                    postBtn.innerText = "POST";
+                    postBtn.disabled = false;
+                });
             });
 
-            function saveCommentsToStorage(comments) {
-                localStorage.setItem('brunchCommentsGlass', JSON.stringify(comments));
+            // Fungsi Ambil Data
+            function fetchComments() {
+                fetch(API_URL)
+                .then(response => response.json())
+                .then(response => {
+                    const comments = response.data;
+                    listContainer.innerHTML = ''; // Bersihkan loading text
+
+                    if (!comments || comments.length === 0) {
+                        listContainer.innerHTML = '<p style="text-align:center; color:#777;">Belum ada komentar. Jadilah yang pertama!</p>';
+                        return;
+                    }
+
+                    // Urutkan dari yang terbaru
+                    comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                    comments.forEach(comment => {
+                        const dateObj = new Date(comment.timestamp);
+                        const timeString = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                        const groupBulan = comment.group_bulan || dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long' });
+
+                        renderComment({
+                            name: comment.nama,
+                            wa: comment.wa,
+                            text: comment.komentar,
+                            time: timeString,
+                            group: groupBulan
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    listContainer.innerHTML = '<p style="text-align:center; color:red;">Gagal memuat komentar.</p>';
+                });
             }
 
-            function getCommentsFromStorage() {
-                const stored = localStorage.getItem('brunchCommentsGlass');
-                return stored ? JSON.parse(stored) : [];
-            }
-
-            function saveComment(comment) {
-                const comments = getCommentsFromStorage();
-                comments.push(comment);
-                saveCommentsToStorage(comments);
-            }
-
-            function loadComments() {
-                const comments = getCommentsFromStorage();
-                comments.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
-                comments.forEach(comment => renderComment(comment));
-            }
-
+            // Fungsi Render HTML
             function renderComment(data) {
                 const safeId = data.group.replace(/\s+/g, '-'); 
                 let groupDetails = document.getElementById(`group-${safeId}`);
@@ -154,12 +197,12 @@
                     groupDetails = document.createElement('details');
                     groupDetails.id = `group-${safeId}`;
                     groupDetails.open = true; 
-                    groupDetails.className = 'glass-dropdown'; // Class baru glass
+                    groupDetails.className = 'glass-dropdown';
                     
                     const summary = document.createElement('summary');
                     summary.textContent = `📂 ${data.group}`;
                     groupDetails.appendChild(summary);
-                    listContainer.prepend(groupDetails); 
+                    listContainer.appendChild(groupDetails); 
                 }
 
                 const itemDiv = document.createElement('div');
@@ -172,7 +215,7 @@
                     <div class="gc-body">${data.text}</div>
                     ${data.wa ? `<div class="gc-wa"><small>📱 ${data.wa}</small></div>` : ''}
                 `;
-                groupDetails.insertBefore(itemDiv, groupDetails.children[1]); 
+                groupDetails.appendChild(itemDiv);
             }
         });
     </script>
