@@ -538,5 +538,90 @@ body {
     background: white;
     border-radius: 15px;
     cursor: pointer;
+/* ================================================= */
+/* === RESPONSIVE (TABLET & MOBILE) === */
+/* ================================================= */
+
+@media (max-width: 1024px) {
+    /* 1. Ubah Grid menjadi Flex Column (Menurun) */
+    .contact-grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Rata tengah */
+        gap: 40px; /* Jarak antar elemen atas bawah */
+        padding-bottom: 20px;
+    }
+
+    /* 2. Atur Ulang Area Tengah (Logo & Order) */
+    .konten-center {
+        grid-column: auto; /* Reset grid */
+        width: 100%; /* Lebar penuh */
+        max-width: 500px; /* Batasi agar tidak terlalu lebar di tablet */
+        margin-bottom: 0; /* Hapus margin besar desktop */
+        order: 1; /* Pastikan ini muncul PERTAMA (di atas) */
+    }
+
+    /* 3. Atur Ulang Area Komentar (Form) */
+    .comment-area-left {
+        grid-column: auto; /* Reset grid */
+        width: 100%;
+        max-width: 500px; /* Samakan lebar dengan atasnya */
+        order: 2; /* Pastikan ini muncul KEDUA (di bawah) */
+        margin-bottom: 20px;
+    }
+
+    /* Perbaikan Visual Form di HP */
+    .glass-form textarea {
+        height: 100px; /* Sedikit lebih tinggi biar nyaman ngetik di HP */
+    }
+
+    /* 4. Penyesuaian Header & Menu di HP */
+    .header-atas {
+        flex-direction: column; /* Logo & Menu jadi atas-bawah */
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .nav-kiri {
+        order: 2; /* Menu pindah ke bawah logo */
+        display: flex;
+        gap: 15px;
+    }
+    
+    .logo-kanan {
+        order: 1; /* Logo pindah ke atas */
+    }
+
+    .nav-kiri a {
+        margin-right: 0;
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        background: rgba(255,255,255,0.5);
+        border-radius: 10px;
+    }
+}
+
+/* === KHUSUS HP KECIL (Dibawah 480px) === */
+@media (max-width: 480px) {
+    .thumbnail-row img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .judul-order {
+        font-size: 1.5rem;
+    }
+
+    .tombol-wa {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 100%; /* Tombol WA Full Width */
+        justify-content: center;
+    }
+
+    .glass-results {
+        max-height: 250px; /* Kurangi tinggi scroll komentar biar ga menuhin layar */
+    }
 }
 .option-btn:hover { background: #ff6f61; color: white; }
+
