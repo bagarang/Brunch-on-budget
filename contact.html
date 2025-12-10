@@ -6,25 +6,21 @@
     <title>Contact - Brunch On Budget</title>
     
     <link rel="stylesheet" href="assets/css/style.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="header-atas header-menu">
-        
         <nav class="nav-kiri">
             <a href="index.html">Home</a>
             <a href="menu.html">Menu</a>
-            </nav>
-
+        </nav>
         <div class="logo-kanan">
             <img src="https://i.imgur.com/lEQi8eH.png" alt="Logo Kecil">
         </div>
     </header>
 
     <section class="hero-utama contact-section">
-        
         <div class="konten-contact">
             
             <div class="thumbnail-row">
@@ -44,16 +40,165 @@
                 <span class="icon-wa">📞</span> Brunch on Lunch
             </a>
 
-        </div>
+            <div class="comment-wrapper">
+                <h3>Apa kata mereka?</h3>
+                
+                <div class="comment-form">
+                    <input type="text" id="inputName" placeholder="Nama Kamu (Wajib diisi)" autocomplete="off">
+                    <input type="email" id="inputEmail" placeholder="Email (Opsional)">
+                    
+                    <textarea id="inputComment" placeholder="Tulis pengalaman makanmu disini..." disabled></textarea>
+                    
+                    <button id="btnPost" disabled>POST COMMENT</button>
+                </div>
 
+                <div id="commentListContainer">
+                    </div>
+            </div>
+            </div>
     </section>
 
     <footer class="footer-bawah">
         <p>&copy; 2025 Brunch On Budget. All Rights Reserved.</p>
     </footer>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const nameInput = document.getElementById('inputName');
+            const emailInput = document.getElementById('inputEmail');
+            const commentInput = document.getElementById('inputComment');
+            const postBtn = document.getElementById('btnPost');
+            const listContainer = document.getElementById('commentListContainer');
+
+            // 1. Logika Membuka Kolom Komentar
+            nameInput.addEventListener('input', function() {
+                if (this.value.trim().length > 0) {
+                    commentInput.disabled = false;
+                    commentInput.style.opacity = "1";
+                    commentInput.style.cursor = "text";
+                    postBtn.disabled = false;
+                    postBtn.style.opacity = "1";
+                    postBtn.style.cursor = "pointer";
+                } else {
+                    commentInput.disabled = true;
+                    commentInput.style.opacity = "0.5";
+                    commentInput.style.cursor = "not-allowed";
+                    postBtn.disabled = true;
+                    postBtn.style.opacity = "0.5";
+                    postBtn.style.cursor = "not-allowed";
+                }
+            });
+
+            // 2. Load Komentar dari LocalStorage saat halaman dibuka
+            loadComments();
+
+            // 3. Logika Posting Komentar
+            postBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                const text = commentInput.value.trim();
+
+                if (!name || !text) {
+                    alert("Nama dan Komentar wajib diisi!");
+                    return;
+                }
+
+                const now = new Date();
+                
+                // Format Bulan Tahun untuk Grouping (contoh: Desember 2025)
+                const monthOptions = { year: 'numeric', month: 'long' };
+                const groupID = now.toLocaleDateString('id-ID', monthOptions); 
+
+                // Format Waktu Detail
+                const timeOptions = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const timestamp = now.toLocaleDateString('id-ID', timeOptions);
+
+                const newComment = {
+                    id: Date.now(),
+                    name: name,
+                    email: email,
+                    text: text,
+                    group: groupID, // Pengelompokan Bulan
+                    time: timestamp,
+                    rawDate: now.toISOString() // Untuk sorting
+                };
+
+                saveComment(newComment);
+                renderComment(newComment);
+
+                // Reset Form
+                commentInput.value = '';
+                emailInput.value = '';
+                // Nama tidak direset agar user tidak capek ngetik ulang jika mau komen lagi
+                alert('Komentar berhasil diposting!');
+            });
+
+            // Fungsi Simpan ke LocalStorage
+            function saveCommentsToStorage(comments) {
+                localStorage.setItem('brunchComments', JSON.stringify(comments));
+            }
+
+            function getCommentsFromStorage() {
+                const stored = localStorage.getItem('brunchComments');
+                return stored ? JSON.parse(stored) : [];
+            }
+
+            function saveComment(comment) {
+                const comments = getCommentsFromStorage();
+                comments.push(comment);
+                saveCommentsToStorage(comments);
+            }
+
+            // Fungsi Load & Render Semua Komentar
+            function loadComments() {
+                const comments = getCommentsFromStorage();
+                
+                // Sort by Date (Terbaru diatas)
+                comments.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
+
+                comments.forEach(comment => renderComment(comment));
+            }
+
+            // Fungsi Render HTML ke Layar
+            function renderComment(data) {
+                // Cek apakah Group Bulan sudah ada?
+                // Kita ganti spasi dengan strip untuk ID HTML yg valid
+                const safeId = data.group.replace(/\s+/g, '-'); 
+                let groupDetails = document.getElementById(`group-${safeId}`);
+
+                if (!groupDetails) {
+                    // Jika belum ada bulan ini, buat dropdown baru
+                    groupDetails = document.createElement('details');
+                    groupDetails.id = `group-${safeId}`;
+                    groupDetails.open = true; // Default terbuka
+                    groupDetails.className = 'month-group';
+                    
+                    const summary = document.createElement('summary');
+                    summary.textContent = `📂 ${data.group}`;
+                    
+                    groupDetails.appendChild(summary);
+                    
+                    // Masukkan ke container paling atas (biar bulan terbaru diatas)
+                    // Logic sederhana: prepend
+                    listContainer.prepend(groupDetails); 
+                }
+
+                // Buat Item Komentar
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'comment-item';
+                itemDiv.innerHTML = `
+                    <div class="c-header">
+                        <strong>${data.name}</strong> 
+                        <span class="c-time">${data.time}</span>
+                    </div>
+                    <div class="c-body">${data.text}</div>
+                    ${data.email ? `<div class="c-email"><small>${data.email}</small></div>` : ''}
+                `;
+
+                // Masukkan komentar tepat setelah summary (paling atas di grup itu)
+                groupDetails.insertBefore(itemDiv, groupDetails.children[1]); 
+            }
+        });
+    </script>
 </body>
-
 </html>
-
-
