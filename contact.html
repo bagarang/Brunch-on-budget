@@ -20,42 +20,44 @@
         </div>
     </header>
 
-    <section class="hero-utama contact-section">
-        <div class="konten-contact">
-            
-            <div class="thumbnail-row">
-                <img src="https://i.imgur.com/4sUp8Nb.jpeg" alt="Preview 1">
-                <img src="https://i.imgur.com/4pgUxUz.jpeg" alt="Preview 2">
-                <img src="https://i.imgur.com/9ylfRQD.jpeg" alt="Preview 3">
-                <img src="https://i.imgur.com/oL4Nfmw.jpeg" alt="Preview 4">
-                <img src="https://i.imgur.com/UGkBVQa.png" alt="Preview 5">
-                <img src="https://i.imgur.com/jfWaxSy.jpeg" alt="Preview 6">
-            </div>
+    <section class="hero-utama contact-page-layout">
+        
+        <div class="contact-grid-container">
 
-            <img src="https://i.imgur.com/lEQi8eH.png" alt="Logo Besar" class="logo-contact-main">
-
-            <h2 class="judul-order">ORDER NOW</h2>
-
-            <a href="https://wa.me/6283161584348" class="tombol-wa" target="_blank">
-                <span class="icon-wa">📞</span> Brunch on Lunch
-            </a>
-
-            <div class="comment-wrapper">
-                <h3>Apa kata mereka?</h3>
-                
-                <div class="comment-form">
-                    <input type="text" id="inputName" placeholder="Nama Kamu (Wajib diisi)" autocomplete="off">
-                    <input type="email" id="inputEmail" placeholder="Email (Opsional)">
-                    
-                    <textarea id="inputComment" placeholder="Tulis pengalaman makanmu disini..." disabled></textarea>
-                    
-                    <button id="btnPost" disabled>POST COMMENT</button>
+            <div class="konten-center">
+                <div class="thumbnail-row">
+                    <img src="https://i.imgur.com/4sUp8Nb.jpeg" alt="Preview 1">
+                    <img src="https://i.imgur.com/4pgUxUz.jpeg" alt="Preview 2">
+                    <img src="https://i.imgur.com/9ylfRQD.jpeg" alt="Preview 3">
                 </div>
 
-                <div id="commentListContainer">
+                <img src="https://i.imgur.com/lEQi8eH.png" alt="Logo Besar" class="logo-contact-main">
+
+                <h2 class="judul-order">ORDER NOW</h2>
+
+                <a href="https://wa.me/6283161584348" class="tombol-wa" target="_blank">
+                    <span class="icon-wa">📞</span> Brunch on Lunch
+                </a>
+            </div>
+
+            <div class="comment-area-left">
+                <h3 class="glass-title">Tulis Komentar</h3>
+                
+                <div class="glass-form">
+                    <input type="text" id="inputName" placeholder="Nama (Wajib)" autocomplete="off">
+                    <input type="number" id="inputWA" placeholder="No. WhatsApp">
+                    
+                    <div class="comment-box-wrapper">
+                        <textarea id="inputComment" placeholder="Tulis pesan..." disabled></textarea>
+                        <button id="btnPost" disabled>POST</button>
+                    </div>
+                </div>
+
+                <div id="commentListContainer" class="glass-results">
                     </div>
             </div>
-            </div>
+
+        </div>
     </section>
 
     <footer class="footer-bawah">
@@ -65,37 +67,33 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const nameInput = document.getElementById('inputName');
-            const emailInput = document.getElementById('inputEmail');
+            const waInput = document.getElementById('inputWA'); // Ganti Email jadi WA
             const commentInput = document.getElementById('inputComment');
             const postBtn = document.getElementById('btnPost');
             const listContainer = document.getElementById('commentListContainer');
 
-            // 1. Logika Membuka Kolom Komentar
+            // 1. Logika Buka Kolom
             nameInput.addEventListener('input', function() {
                 if (this.value.trim().length > 0) {
                     commentInput.disabled = false;
-                    commentInput.style.opacity = "1";
-                    commentInput.style.cursor = "text";
                     postBtn.disabled = false;
-                    postBtn.style.opacity = "1";
+                    commentInput.style.cursor = "text";
                     postBtn.style.cursor = "pointer";
                 } else {
                     commentInput.disabled = true;
-                    commentInput.style.opacity = "0.5";
-                    commentInput.style.cursor = "not-allowed";
                     postBtn.disabled = true;
-                    postBtn.style.opacity = "0.5";
+                    commentInput.style.cursor = "not-allowed";
                     postBtn.style.cursor = "not-allowed";
                 }
             });
 
-            // 2. Load Komentar dari LocalStorage saat halaman dibuka
+            // 2. Load Data
             loadComments();
 
-            // 3. Logika Posting Komentar
+            // 3. Action Post
             postBtn.addEventListener('click', () => {
                 const name = nameInput.value.trim();
-                const email = emailInput.value.trim();
+                const wa = waInput.value.trim();
                 const text = commentInput.value.trim();
 
                 if (!name || !text) {
@@ -104,42 +102,35 @@
                 }
 
                 const now = new Date();
-                
-                // Format Bulan Tahun untuk Grouping (contoh: Desember 2025)
                 const monthOptions = { year: 'numeric', month: 'long' };
                 const groupID = now.toLocaleDateString('id-ID', monthOptions); 
-
-                // Format Waktu Detail
-                const timeOptions = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const timeOptions = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
                 const timestamp = now.toLocaleDateString('id-ID', timeOptions);
 
                 const newComment = {
                     id: Date.now(),
                     name: name,
-                    email: email,
+                    wa: wa, // Simpan WA
                     text: text,
-                    group: groupID, // Pengelompokan Bulan
+                    group: groupID, 
                     time: timestamp,
-                    rawDate: now.toISOString() // Untuk sorting
+                    rawDate: now.toISOString()
                 };
 
                 saveComment(newComment);
                 renderComment(newComment);
 
-                // Reset Form
+                // Reset Form (Nama biarkan saja)
                 commentInput.value = '';
-                emailInput.value = '';
-                // Nama tidak direset agar user tidak capek ngetik ulang jika mau komen lagi
-                alert('Komentar berhasil diposting!');
+                waInput.value = '';
             });
 
-            // Fungsi Simpan ke LocalStorage
             function saveCommentsToStorage(comments) {
-                localStorage.setItem('brunchComments', JSON.stringify(comments));
+                localStorage.setItem('brunchCommentsGlass', JSON.stringify(comments));
             }
 
             function getCommentsFromStorage() {
-                const stored = localStorage.getItem('brunchComments');
+                const stored = localStorage.getItem('brunchCommentsGlass');
                 return stored ? JSON.parse(stored) : [];
             }
 
@@ -149,53 +140,38 @@
                 saveCommentsToStorage(comments);
             }
 
-            // Fungsi Load & Render Semua Komentar
             function loadComments() {
                 const comments = getCommentsFromStorage();
-                
-                // Sort by Date (Terbaru diatas)
                 comments.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
-
                 comments.forEach(comment => renderComment(comment));
             }
 
-            // Fungsi Render HTML ke Layar
             function renderComment(data) {
-                // Cek apakah Group Bulan sudah ada?
-                // Kita ganti spasi dengan strip untuk ID HTML yg valid
                 const safeId = data.group.replace(/\s+/g, '-'); 
                 let groupDetails = document.getElementById(`group-${safeId}`);
 
                 if (!groupDetails) {
-                    // Jika belum ada bulan ini, buat dropdown baru
                     groupDetails = document.createElement('details');
                     groupDetails.id = `group-${safeId}`;
-                    groupDetails.open = true; // Default terbuka
-                    groupDetails.className = 'month-group';
+                    groupDetails.open = true; 
+                    groupDetails.className = 'glass-dropdown'; // Class baru glass
                     
                     const summary = document.createElement('summary');
                     summary.textContent = `📂 ${data.group}`;
-                    
                     groupDetails.appendChild(summary);
-                    
-                    // Masukkan ke container paling atas (biar bulan terbaru diatas)
-                    // Logic sederhana: prepend
                     listContainer.prepend(groupDetails); 
                 }
 
-                // Buat Item Komentar
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'comment-item';
+                itemDiv.className = 'glass-comment-item';
                 itemDiv.innerHTML = `
-                    <div class="c-header">
+                    <div class="gc-header">
                         <strong>${data.name}</strong> 
-                        <span class="c-time">${data.time}</span>
+                        <span class="gc-time">${data.time}</span>
                     </div>
-                    <div class="c-body">${data.text}</div>
-                    ${data.email ? `<div class="c-email"><small>${data.email}</small></div>` : ''}
+                    <div class="gc-body">${data.text}</div>
+                    ${data.wa ? `<div class="gc-wa"><small>📱 ${data.wa}</small></div>` : ''}
                 `;
-
-                // Masukkan komentar tepat setelah summary (paling atas di grup itu)
                 groupDetails.insertBefore(itemDiv, groupDetails.children[1]); 
             }
         });
