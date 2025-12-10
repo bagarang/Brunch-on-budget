@@ -308,5 +308,150 @@ body {
     background: white;
     border-radius: 15px;
     cursor: pointer;
+/* === COMMENT SECTION STYLES === */
+.comment-wrapper {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #fdceb4;
+    text-align: left; /* Reset text align jadi rata kiri */
 }
+
+.comment-wrapper h3 {
+    text-align: center;
+    color: #5a3e36;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Form Styling */
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.comment-form input, 
+.comment-form textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+.comment-form input:focus, 
+.comment-form textarea:focus {
+    border-color: #ff6f61;
+    box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
+}
+
+.comment-form textarea {
+    height: 80px;
+    resize: none;
+    background-color: #fff;
+}
+
+/* Disabled State (saat nama belum diisi) */
+.comment-form textarea:disabled,
+#btnPost:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
+#btnPost {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+#btnPost:hover:not(:disabled) {
+    background-color: #e05548;
+    transform: scale(1.02);
+}
+
+/* Dropdown (Details/Summary) Styling */
+.month-group {
+    margin-bottom: 15px;
+    border: 1px solid #fdceb4;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.month-group summary {
+    background-color: #fdceb4;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #5a3e36;
+    list-style: none; /* Hilangkan panah default browser */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Custom Arrow untuk Dropdown */
+.month-group summary::after {
+    content: '▼';
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+.month-group[open] summary::after {
+    transform: rotate(180deg);
+}
+
+/* Isi Komentar */
+.comment-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    animation: fadeIn 0.5s ease;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.c-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.c-time {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.c-body {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.c-email {
+    margin-top: 5px;
+    color: #ff6f61;
+    font-size: 0.8rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .option-btn:hover { background: #ff6f61; color: white; }
