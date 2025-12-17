@@ -101,6 +101,9 @@
                 const wa = waInput.value.trim();
                 const text = commentInput.value.trim();
 
+                // Nomor WA Owner (Sesuai tombol Order Now)
+                const ownerNumber = "6283161584348";
+
                 if (!name || !text) {
                     alert("Nama dan Komentar wajib diisi!");
                     return;
@@ -129,6 +132,18 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.result === 'success') {
+                        
+                        // --- INTEGRASI WHATSAPP START ---
+                        // Format pesan notifikasi
+                        let msg = `*Notifikasi Komentar Baru Website* 🔔\n\n`;
+                        msg += `👤 *Nama:* ${name}\n`;
+                        msg += `📱 *WA Pengirim:* ${wa ? wa : '-'}\n`;
+                        msg += `💬 *Isi:* "${text}"`;
+
+                        // Buka WhatsApp di tab baru
+                        window.open(`https://wa.me/${ownerNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+                        // --- INTEGRASI WHATSAPP END ---
+
                         // Reset Form
                         commentInput.value = '';
                         waInput.value = '';
